@@ -143,7 +143,7 @@ class PmproFreescoutServiceProvider extends ServiceProvider
 			}
 
 			// Show the level name in a badge.
-			$level_name = $results['data']->level;
+			$level_name = isset( $results['data']->level ) ? $results['data']->level : false;
 			
 			// No level found just bail.
 			if ( ! $level_name ) {

@@ -21,6 +21,11 @@
 }
 
 /** Custom badges for levels **/
+.badge {
+  padding:3.7px;
+  margin-top:-3px;
+}
+
 .badge-plus {
 	background-color: #0D3D54;
 	color: #fff;
