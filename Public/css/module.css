@@ -19,3 +19,19 @@
 	padding-bottom: 3px;
 	border-bottom: 1px solid #E3E8EB;
 }
+
+/** Custom badges for levels **/
+.badge-plus {
+	background-color: #0D3D54;
+	color: #fff;
+}
+
+.badge-standard {
+	background-color:#E87101;
+	color:#fff;
+}
+
+.badge-default {
+	background-color: #797979;
+	color: #fff;
+}
