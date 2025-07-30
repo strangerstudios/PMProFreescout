@@ -166,11 +166,11 @@ class PmproFreescoutServiceProvider extends ServiceProvider
 
 		// Reorder the mailbox folders, maintain the default folders structure and squeeze in custom folders above the default. Default folders are 'type' 1-80, custom folders are 81+.
 		\Eventy::addFilter('mailbox.folders', function ($folders, $mailbox) {
-			return $folders
-			->filter(fn($folder) => $folder->type > 80)  // Pull high-priority types first
-			->concat($folders->filter(fn($folder) => $folder->type <= 80)) // Append the rest as-is
-			->values();
-		}, 90, 2);
+            return $folders
+            ->filter(function($folder) { return $folder->type > 80; })  // Pull high-priority types first
+            ->concat($folders->filter(function($folder) { return $folder->type <= 80; })) // Append the rest as-is
+            ->values();
+        }, 90, 2);
 	}
 
     /**
