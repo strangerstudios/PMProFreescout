@@ -25,6 +25,9 @@ class PmproFreescoutServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+		// Let's load custom views from our module first.
+        $this->app['view']->getFinder()->prependLocation(__DIR__ . '/../Resources/views');
+		
         $this->registerConfig();
         $this->registerViews();
         $this->registerFactories();
