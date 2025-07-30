@@ -168,9 +168,7 @@ class PmproFreescoutServiceProvider extends ServiceProvider
 		\Eventy::addFilter('mailbox.folders', function ($folders, $mailbox) {
 			return $folders
 			->filter(fn($folder) => $folder->type > 80)  // Pull high-priority types first
-			->concat(
-				$folders->filter(fn($folder) => $folder->type <= 80) // Append the rest as-is
-			)
+			->concat($folders->filter(fn($folder) => $folder->type <= 80)) // Append the rest as-is
 			->values();
 		}, 90, 2);
 	}
