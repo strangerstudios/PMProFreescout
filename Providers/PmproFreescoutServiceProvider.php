@@ -180,6 +180,22 @@ class PmproFreescoutServiceProvider extends ServiceProvider
 			->concat($folders->filter(function($folder) { return $folder->type <= 140; })) // Append the rest as-is
 			->values();
 		}, 90, 2);
+
+		// Hide the "assigned to" column in custom folders. We can get more granular on the folder types if needed.
+		\Eventy::addFilter('conversations_table.show_assigned_column', function ($show_assigned, $folder) {
+			
+			// If we're already not showing this column, let's just bail.
+			if ( ! $show_assigned ) {
+				return $show_assigned;
+			}
+
+			// Hide this only for custom folders etc.
+			if ( isset( $folder->type ) && $folder->type > 140 ) {
+				$show_assigned = false;
+			}
+
+			return $show_assigned;
+		}, 10, 2);
 	}
 
     /**
