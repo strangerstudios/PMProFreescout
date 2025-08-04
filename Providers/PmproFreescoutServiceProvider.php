@@ -103,9 +103,9 @@ class PmproFreescoutServiceProvider extends ServiceProvider
                 "error" => []
             ];
 
-            $customer_email = $customer->getMainEmail();
-
-            if (!$customer_email) {
+            // Get the customer email from the customer or conversation object.
+            $customer_email = $customer->getMainEmail() ?? $conversation->mailbox->email;
+            if ( empty( $customer_email ) ) {
                 return;
             }
 
