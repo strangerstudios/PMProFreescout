@@ -246,7 +246,11 @@ class PmproFreescoutServiceProvider extends ServiceProvider
 			return $response;
 		}
 
-        $request_url = $url . 'wp-json/bbpress-support/v1/get-customer-info/';
+		//ToDo: Build this endpoint in PMPro core
+		$request_url = \Eventy::filter( 'pmprofs_rest_route_url', 
+			$url . 'wp-json/paid-memberships-pro/v1/get-member-info/', 
+			$url 
+		);
 
         // Get data via REST API and return it.
 		try {
