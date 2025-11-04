@@ -4,6 +4,8 @@ namespace Modules\PmproFreescout\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 
 //Module Alias
 define( 'PMPRO_MODULE', 'pmprofreescout' );
@@ -247,34 +249,35 @@ class PmproFreescoutServiceProvider extends ServiceProvider
         $request_url = $url . 'wp-json/bbpress-support/v1/get-customer-info/';
 
         // Get data via REST API and return it.
-        try {
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $request_url. '?user_email=' . $customer_email );
-            curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
-            curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		try {
+			$client = new Client([
+				'timeout'     => 10,
+				'allow_redirects' => true,
+				'auth'        => [$username, $password],
+			]);
 
-            $results = curl_exec($ch);
-            $status_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			$request = $client->request('GET', $request_url, [
+				'query' => [
+					'user_email' => $customer_email,
+				],
+			]);
 
-            curl_close($ch);
+			$status_code = $request->getStatusCode();
+			$body        = $request->getBody();
+			if ( $status_code === 200 ) {
+				$response['data'] = json_decode( $body );
 
-            // If the request was okay, get data otherwise let's get an error yo!
-            if ( $status_code == 200 ) {
-                $response['data'] = json_decode( $results );
+				// Cache data for 60 minutes
+				\Cache::put($cache_key, $response['data'], 60);
+			} else {
+				$response['error'] = self::errorCodeDescr($status_code);
+			}
+		} catch (GuzzleException $e) {
+			$response['error'] = $e->getMessage();
+		}
 
-				// Cache request data for 60 minutes.
-                \Cache::put( $cache_key, $response['data'], now()->addMinutes( 60 ) );
-            } else {
-                $response['error'] = self::errorCodeDescr( $status_code );
-            }
-        } catch ( Exception $e ) {
-            $response['error'] = $e->getMessage();
-        }
-
-        return $response;
-    }
+		return $response;
+	}
 
     /**
      * Check if credentials are saved and working.
