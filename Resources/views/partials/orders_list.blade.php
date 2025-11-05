@@ -38,7 +38,7 @@
             @endphp
 			@foreach ($fields as $label => $field)
 				@if (!empty($results->$field))
-					<li><strong>{{ $label }}</strong>: {{ $results->$field }}</li>					
+					<li><strong>{{ $label }}</strong>: {{ $results->$field }}</li>
 				@else
 					<li><strong>{{ $label }}</strong>: -</li>	
 			@endif
