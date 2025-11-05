@@ -130,44 +130,7 @@ class PmproFreescoutServiceProvider extends ServiceProvider
             ])->render();
         }, 12, 3 );
 
-		// Add a custom badge to the conversations.
-		\Eventy::addAction('conversations_table.before_subject', function ($conversation) {
-			$mailbox = $conversation->mailbox;
 
-			// Make sure that we have settings for authentication.
-			if (!\PmproFreescout::isMailboxApiEnabled($mailbox)) {
-				return;
-			}
-
-			$customer_email = $conversation->customer->getMainEmail();
-			$results = self::apiGetMemberInfo( $customer_email, $mailbox );
-
-			if ( ! empty( $results['error'] ) ) {
-				// If there is an error, we don't want to show the badge.
-				return;
-			}
-
-			// Show the level name in a badge.
-			$level_name = isset( $results['data']->level ) ? $results['data']->level : false;
-			
-			// No level found just bail.
-			if ( ! $level_name ) {
-				// If there is no level name, we don't want to show the badge.
-				return;
-			}
-
-			// Figure out dynamically which CSS class to use based on the level name for the badge.
-			$premium_levels = array( 'Plus', 'Builder', 'PMPro VIP' );
-			if ( in_array( $level_name, $premium_levels ) ) {
-				$css_class = 'badge badge-plus';
-			} elseif ( $level_name === 'Standard' ) {
-				$css_class = 'badge badge-standard';
-			} else {
-				$css_class = 'badge badge-default';
-			}
-			
-			echo '<span class="' . $css_class . '">' . $level_name . '</span> ';
-		});
 
 		// Reorder the mailbox folders, maintain the default folders structure and squeeze in custom folders above the default. Default folders are 'type' 1-80, custom folders are 81+.
 		// We are using 140 as the type threshold due to other modules using types 1-140 for default folders.
