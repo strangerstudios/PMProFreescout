@@ -22,7 +22,8 @@
             {{ __("N/A") }}
             @endif
             )
-            </li>            
+            </li>
+            <li style="font-size:11px;"><strong>Key:</strong> {{$results->license}} </li>
             <li><strong>Refunded:</strong> @if( $results->refunds_last_order_id )
             <span style="color:red;">{{ __("Yes") }}</span>
             ( <a href="{{$url}}wp-admin/admin.php?page=pmpro-orders&order={{$results->refunds_last_order_id}}" target="_blank">#{{$results->refunds_last_order_id}}</a> )
@@ -33,16 +34,7 @@
             @if ( $results->refunds_total_found > 0 )
             <li><strong>Num. Refunds:</strong> {{$results->refunds_total_found}}</li>
             @endif
-            @php
-            $fields = \Eventy::filter('pmprofs_widget_userfields', []);
-            @endphp
-			@foreach ($fields as $label => $field)
-				@if (!empty($results->$field))
-					<li><strong>{{ $label }}</strong>: {{ $results->$field }}</li>
-				@else
-					<li><strong>{{ $label }}</strong>: -</li>
-			@endif
-			@endforeach
+            <li><strong>User Notes:</strong> {{$results->pmpro_user_notes}}</li>
         </ul>
         @elseif( $error )
         <div class="text-help margin-top-10 edd-no-orders">{{ $error }}</div>
