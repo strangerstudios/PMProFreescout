@@ -22,8 +22,7 @@
             {{ __("N/A") }}
             @endif
             )
-            </li>
-            <li style="font-size:11px;"><strong>Key:</strong> {{$results->license}} </li>
+            </li>            
             <li><strong>Refunded:</strong> @if( $results->refunds_last_order_id )
             <span style="color:red;">{{ __("Yes") }}</span>
             ( <a href="{{$url}}wp-admin/admin.php?page=pmpro-orders&order={{$results->refunds_last_order_id}}" target="_blank">#{{$results->refunds_last_order_id}}</a> )
@@ -34,7 +33,23 @@
             @if ( $results->refunds_total_found > 0 )
             <li><strong>Num. Refunds:</strong> {{$results->refunds_total_found}}</li>
             @endif
-            <li><strong>User Notes:</strong> {{$results->pmpro_user_notes}}</li>
+			@php				
+				$meta = isset($results->meta) ? (array) $results->meta : [];
+			@endphp
+			@if (!empty($meta))
+				@foreach ($meta as $key => $value)
+					<li>
+						<strong>{{ ucfirst(str_replace('_', ' ', $key)) }}</strong>:
+						@if (is_array($value))
+							{{ implode(', ', $value) }}
+						@elseif (is_object($value))
+							{{ json_encode($value) }}
+						@else
+							{{ $value !== '' ? $value : '-' }}
+						@endif
+					</li>
+				@endforeach
+			@endif
         </ul>
         @elseif( $error )
         <div class="text-help margin-top-10 edd-no-orders">{{ $error }}</div>
