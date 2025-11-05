@@ -33,9 +33,9 @@
             @if ( $results->refunds_total_found > 0 )
             <li><strong>Num. Refunds:</strong> {{$results->refunds_total_found}}</li>
             @endif
-			@php				
-			$fields = \Eventy::filter('pmprofs_widget_userfields', []);				
-			@endphp
+            @php
+            $fields = \Eventy::filter('pmprofs_widget_userfields', []);
+            @endphp
 			@foreach ($fields as $label => $field)
 				@if (!empty($results->$field))
 					<li><strong>{{ $label }}</strong>: {{ $results->$field }}</li>					
