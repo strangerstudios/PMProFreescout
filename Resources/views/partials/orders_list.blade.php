@@ -46,8 +46,8 @@
             <div class="margin-top-10 small pmpro-actions text-center">
                 <a href="#" class="sidebar-block-link pmpro-refresh"><i class="glyphicon glyphicon-refresh"></i> {{ __("Refresh") }}</a> |
                 <a href="{{$url}}wp-admin/admin.php?page=pmpro-member&user_id={{ $results->user_id }}" class="sidebar-block-link" target="_blank">Edit Member</a> |
-                <a href="{{$url}}wp-admin/admin.php?page=pmpro-orders&filter=all&s={{ $customer_email }}" class="sidebar-block-link" target="_blank">View All Orders</a> |
-                <a href="https://app.convertkit.com/subscribers?query={{ $customer_email }}&status=all" class="sidebar-block-link" target="_blank">View in Kit</a>
+                <a href="{{$url}}wp-admin/admin.php?page=pmpro-orders&filter=all&s={{ $customer_email }}" class="sidebar-block-link" target="_blank">View All Orders</a>
+                {!! Eventy::action('pmprofs_widget_action_links', $results ?? null, $customer_email ?? null ) !!}
             </div>
         @endif
         
