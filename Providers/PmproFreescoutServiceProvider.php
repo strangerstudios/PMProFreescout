@@ -210,7 +210,7 @@ class PmproFreescoutServiceProvider extends ServiceProvider
 		}
 
 		//ToDo: Build this endpoint in PMPro core
-		$endpoint = \Eventy::filter( 'pmprofs_rest_route_url', 'wp-json/paid-memberships-pro/v1/get-member-info/' );
+		$endpoint = \Eventy::filter( 'pmprofs_rest_route_url', 'wp-json/pmpro/v1/get_member_info/' );
 
 		$request_url = $url . $endpoint;
 		
