@@ -14,7 +14,10 @@
         </div>
         @if( $results )
         <ul class="sidebar-block-list pmpro-orders-list">
-            <li><strong>Username:</strong> <a href="{{$url}}forums/users/{{$results->user_login}}" target="_blank">{{$results->user_login}}</a></li>
+            @php
+			$username_url = Eventy::filter('pmprofs_username_url', $url . 'wp-admin/admin.php?page=pmpro-member&user_id=' . $results->user_id, $results, $url);
+			@endphp
+			<li><strong>Username:</strong> <a href="{!! $username_url !!}" target="_blank">{{$results->user_login}}</a></li>
             <li><strong>Level:</strong> {{$results->level}} (
             @if( $results->order_id != 0 )
             <a href="{{$url}}wp-admin/admin.php?page=pmpro-orders&order={{$results->order_id}}" target="_blank">{{$results->order_total}}</a>
