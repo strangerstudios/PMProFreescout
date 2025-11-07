@@ -130,37 +130,6 @@ class PmproFreescoutServiceProvider extends ServiceProvider
             ])->render();
         }, 12, 3 );
 
-
-
-		// Reorder the mailbox folders, maintain the default folders structure and squeeze in custom folders above the default. Default folders are 'type' 1-80, custom folders are 81+.
-		// We are using 140 as the type threshold due to other modules using types 1-140 for default folders.
-		\Eventy::addFilter('mailbox.folders', function ($folders, $mailbox) {
-			// Folders are null, let's just bail.	
-			if ( empty( $folders ) ) {
-				return $folders;
-			}
-
-			return $folders
-			->filter(function($folder) { return $folder->type > 140; })  // Pull high-priority types first
-			->concat($folders->filter(function($folder) { return $folder->type <= 140; })) // Append the rest as-is
-			->values();
-		}, 90, 2);
-
-		// Hide the "assigned to" column in custom folders. We can get more granular on the folder types if needed.
-		\Eventy::addFilter('conversations_table.show_assigned_column', function ($show_assigned, $folder) {
-			
-			// If we're already not showing this column, let's just bail.
-			if ( ! $show_assigned ) {
-				return $show_assigned;
-			}
-
-			// Hide this only for custom folders etc.
-			if ( isset( $folder->type ) && $folder->type > 140 ) {
-				$show_assigned = false;
-			}
-
-			return $show_assigned;
-		}, 10, 2);
 	}
 
     /**
@@ -209,7 +178,7 @@ class PmproFreescoutServiceProvider extends ServiceProvider
 			return $response;
 		}
 
-		//ToDo: Build this endpoint in PMPro core
+		// Filter the REST API endpoint for collecting data, helpful if sites want to customize this for their own routes.
 		$endpoint = \Eventy::filter( 'pmprofs_rest_route_url', 'wp-json/pmpro/v1/get_member_info/' );
 
 		$request_url = $url . $endpoint;
