@@ -2,7 +2,7 @@
     "name": "Paid Memberships Pro",
     "alias": "pmprofreescout",
     "description": "Links Paid Memberships Pro order details into freescout widget via REST API.",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "detailsUrl": "https://strangerstudios.com",
     "author": "Stranger Studios",
     "authorUrl": "https://strangerstudios.com",
